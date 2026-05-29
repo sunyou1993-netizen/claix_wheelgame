@@ -210,6 +210,11 @@ body {
   color: #667085;
   font-weight: 500;
   line-height: 1.45;
+  min-height: 100px; /* Force minimum height of 2 lines to prevent layout shift */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* Roulette Wheel Box */
@@ -1111,4 +1116,51 @@ body {
   font-weight: 600;
   color: #667085;
 }
+
+/* Beautiful Toast Notification and Inline Input style */
+.toast-notification {
+  position: absolute;
+  bottom: 240px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background-color: rgba(16, 24, 40, 0.95);
+  color: #FFFFFF;
+  padding: 24px 56px;
+  border-radius: 28px;
+  font-size: 32px;
+  font-weight: 700;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.inline-edit-input-error {
+  animation: pulseGlow 1.5s infinite;
+  border-color: #EF4444 !important;
+}
+
 

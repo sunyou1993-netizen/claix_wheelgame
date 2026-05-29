@@ -273,14 +273,11 @@ const fireworks = new FireworksCelebration('fireworks-canvas');
 // Primary application state
 const state = {
   participants: [
-    "김하늘",
-    "이서준",
-    "박지우",
-    "한민준",
-    "정예린",
-    "공동현",
-    "오서연",
-    "임건우"
+    "입력",
+    "입력",
+    "입력",
+    "입력",
+    "입력"
   ],
   isSpinning: false,
   currentRotationAngle: 0, // In radians
@@ -377,56 +374,58 @@ function drawRoulette() {
     ctx.translate(cardX, cardY);
     ctx.rotate(-(state.currentRotationAngle + startRad + sectorAngle / 2));
 
-    if (isWinner) {
-      // High-contrast vibrant blue shadow glow
-      ctx.shadowColor = 'rgba(0, 108, 255, 0.45)';
-      ctx.shadowBlur = 24 * scaleFactor;
-      ctx.shadowOffsetY = 6 * scaleFactor;
-    } else {
-      // Soft subtle outer shadow for name pills
-      ctx.shadowColor = 'rgba(0, 50, 150, 0.05)';
-      ctx.shadowBlur = 8 * scaleFactor;
-      ctx.shadowOffsetY = 3 * scaleFactor;
+    if (editingParticipantIndex !== i) {
+      if (isWinner) {
+        // High-contrast vibrant blue shadow glow
+        ctx.shadowColor = 'rgba(0, 108, 255, 0.45)';
+        ctx.shadowBlur = 24 * scaleFactor;
+        ctx.shadowOffsetY = 6 * scaleFactor;
+      } else {
+        // Soft subtle outer shadow for name pills
+        ctx.shadowColor = 'rgba(0, 50, 150, 0.05)';
+        ctx.shadowBlur = 8 * scaleFactor;
+        ctx.shadowOffsetY = 3 * scaleFactor;
+      }
+
+      // Draw rounded rectangle container
+      ctx.beginPath();
+      ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, cardR);
+      if (isWinner) {
+        // Premium gradient from sky blue to classic blue
+        const gradient = ctx.createLinearGradient(-cardW / 2, -cardH / 2, cardW / 2, cardH / 2);
+        gradient.addColorStop(0, '#3B82F6');
+        gradient.addColorStop(1, '#1D75FF');
+        ctx.fillStyle = gradient;
+      } else {
+        ctx.fillStyle = '#FFFFFF';
+      }
+      ctx.fill();
+
+      // Disable shadow for text/borders next
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Clean border trim in brand light blue or gold-white
+      ctx.lineWidth = isWinner ? (3.5 * scaleFactor) : (2 * scaleFactor);
+      ctx.strokeStyle = isWinner ? '#FFFFFF' : '#D9E6FF';
+      ctx.stroke();
+
+      // Draw participant text
+      let displayName = state.participants[i] || '입력';
+      if (displayName.length > 4 && displayName !== '입력') {
+        displayName = displayName.substring(0, 3) + '..';
+      }
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const winFontSize = Math.round(24 * scaleFactor);
+      const normFontSize = Math.round(20 * scaleFactor);
+      ctx.font = isWinner ? `bold ${winFontSize}px Pretendard` : `700 ${normFontSize}px Pretendard`;
+      ctx.fillStyle = isWinner ? '#FFFFFF' : (displayName === '입력' ? '#98A2B3' : '#344054');
+
+      // Draw name centered inside card-pill
+      ctx.fillText(displayName, 0, 0);
     }
-
-    // Draw the rounded rectangle container
-    ctx.beginPath();
-    ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, cardR);
-    if (isWinner) {
-      // Premium gradient from sky blue to classic blue
-      const gradient = ctx.createLinearGradient(-cardW / 2, -cardH / 2, cardW / 2, cardH / 2);
-      gradient.addColorStop(0, '#3B82F6');
-      gradient.addColorStop(1, '#1D75FF');
-      ctx.fillStyle = gradient;
-    } else {
-      ctx.fillStyle = '#FFFFFF';
-    }
-    ctx.fill();
-
-    // Disable shadow for text/borders next
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetY = 0;
-
-    // Clean border trim in brand light blue or gold-white
-    ctx.lineWidth = isWinner ? (3.5 * scaleFactor) : (2 * scaleFactor);
-    ctx.strokeStyle = isWinner ? '#FFFFFF' : '#D9E6FF';
-    ctx.stroke();
-
-    // Draw participant text
-    let displayName = state.participants[i] || '입력';
-    if (displayName.length > 4 && displayName !== '입력') {
-      displayName = displayName.substring(0, 3) + '..';
-    }
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    const winFontSize = Math.round(24 * scaleFactor);
-    const normFontSize = Math.round(20 * scaleFactor);
-    ctx.font = isWinner ? `bold ${winFontSize}px Pretendard` : `700 ${normFontSize}px Pretendard`;
-    ctx.fillStyle = isWinner ? '#FFFFFF' : (displayName === '입력' ? '#98A2B3' : '#344054');
-
-    // Draw name centered inside card-pill
-    ctx.fillText(displayName, 0, 0);
 
     ctx.restore();
   }
@@ -521,7 +520,48 @@ function bindCanvasInteraction() {
   });
 }
 
-function openNameEditModal(idx) {
+function showToast(message) {
+  // Remove any existing toast
+  const existingToast = document.getElementById('aistudio-toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  const toast = document.createElement('div');
+  toast.id = 'aistudio-toast';
+  toast.className = 'toast-notification';
+  
+  const iconEl = document.createElement('span');
+  iconEl.innerHTML = `⚠️`;
+  iconEl.style.fontSize = '36px';
+  toast.appendChild(iconEl);
+
+  const textEl = document.createElement('span');
+  textEl.innerText = message;
+  toast.appendChild(textEl);
+
+  const appContainer = document.getElementById('app-container');
+  if (appContainer) {
+    appContainer.appendChild(toast);
+  } else {
+    document.body.appendChild(toast);
+  }
+
+  // Force animate in next event loop
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 30);
+
+  // Auto remove
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
+
+function openNameEditModal(idx, isError = false) {
   if (state.isSpinning) return;
 
   // Remove any active inline edit input first
@@ -556,6 +596,9 @@ function openNameEditModal(idx) {
   const pctX = (pillX / canvas.width) * 100;
   const pctY = (pillY / canvas.height) * 100;
 
+  // Re-draw the wheel immediately so the canvas hides the text and original card for this sector
+  drawRoulette();
+
   // Create inline input element on the fly
   const inputEl = document.createElement('input');
   inputEl.id = 'inline-edit-input';
@@ -564,24 +607,34 @@ function openNameEditModal(idx) {
   inputEl.maxLength = 10;
   inputEl.placeholder = '입력';
 
+  const isWinner = (!state.isSpinning && state.winningIndex !== null && idx === state.winningIndex);
+  const cardW = (isWinner ? 122 : 100) * scaleFactor;
+  const cardH = (isWinner ? 58 : 50) * scaleFactor;
+  const cardR = (isWinner ? 16 : 14) * scaleFactor;
+
   // Apply rich modern styles that match the wheel's design
   inputEl.style.position = 'absolute';
-  inputEl.style.width = `${Math.round(100 * scaleFactor)}px`;
-  inputEl.style.height = `${Math.round(48 * scaleFactor)}px`;
+  inputEl.style.width = `${Math.round(cardW)}px`;
+  inputEl.style.height = `${Math.round(cardH)}px`;
   inputEl.style.left = `${pctX}%`;
-  inputEl.style.top = `${pctY - 10}%`;
+  inputEl.style.top = `${pctY}%`;
   inputEl.style.transform = 'translate(-50%, -50%)';
-  inputEl.style.borderRadius = `${Math.round(14 * scaleFactor)}px`;
-  inputEl.style.border = `${Math.round(3 * scaleFactor)}px solid #006CFF`;
+  inputEl.style.borderRadius = `${Math.round(cardR)}px`;
+  if (isError) {
+    inputEl.className = 'inline-edit-input-error';
+    inputEl.style.border = `${Math.round(3 * scaleFactor)}px solid #EF4444`;
+  } else {
+    inputEl.style.border = `${Math.round(3 * scaleFactor)}px solid #006CFF`;
+  }
   inputEl.style.backgroundColor = '#FFFFFF';
   inputEl.style.fontFamily = 'Pretendard, sans-serif';
-  inputEl.style.fontSize = `${Math.round(18 * scaleFactor)}px`;
+  inputEl.style.fontSize = `${Math.round((isWinner ? 24 : 20) * scaleFactor)}px`;
   inputEl.style.fontWeight = '700';
-  inputEl.style.color = '#344054';
+  inputEl.style.color = '#101828';
   inputEl.style.textAlign = 'center';
   inputEl.style.outline = 'none';
-  inputEl.style.zIndex = '100';
-  inputEl.style.boxShadow = '0 12px 28px rgba(0, 108, 255, 0.28)';
+  inputEl.style.zIndex = '500';
+  inputEl.style.boxShadow = isError ? '0 12px 28px rgba(239, 68, 68, 0.4)' : '0 12px 28px rgba(0, 108, 255, 0.28)';
   inputEl.style.transition = 'all 0.15s ease';
 
   // Append input into viewport container
@@ -601,6 +654,7 @@ function openNameEditModal(idx) {
     isSaved = true;
     const finalVal = inputEl.value.trim() || '입력';
     state.participants[idx] = finalVal;
+    editingParticipantIndex = null;
     audio.playClick();
     inputEl.remove();
     syncParticipantsHTML();
@@ -613,7 +667,9 @@ function openNameEditModal(idx) {
       saveChanges();
     } else if (e.key === 'Escape') {
       isSaved = true; // prevent save on subsequent blur
+      editingParticipantIndex = null;
       inputEl.remove();
+      drawRoulette();
     }
   };
 
@@ -635,6 +691,14 @@ function spinWheel() {
   const activeInput = document.getElementById('inline-edit-input');
   if (activeInput) {
     activeInput.remove();
+  }
+
+  // Check if there is any participant whose name is empty or literally '입력'
+  const firstEmptyIdx = state.participants.findIndex(name => !name || name.trim() === '' || name.trim() === '입력');
+  if (firstEmptyIdx !== -1) {
+    showToast("참여자 이름을 모두 입력해 주세요!");
+    openNameEditModal(firstEmptyIdx, true); // Open in error mode!
+    return;
   }
 
   // Dismiss inline banner and stop old fireworks
