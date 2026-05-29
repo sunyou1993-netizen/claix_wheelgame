@@ -1,0 +1,6 @@
+{
+  "name": "랜덤 돌림판",
+  "description": "1080x1920 단말 부착형 디지털 사이니지용 대형 돌림판 발표자 선정 게임입니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

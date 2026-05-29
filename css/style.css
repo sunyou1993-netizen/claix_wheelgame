@@ -1,0 +1,1114 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #000000; /* Black background to make the outer area disappear */
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* 1080x1920 fixed viewport container */
+#app-container {
+  width: 1080px;
+  height: 1920px;
+  background-color: #F4F8FF; /* Flat pastel blue background */
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 48px 48px 48px; /* Horizontal 48px, bottom 48px */
+  box-shadow: none;
+  flex-shrink: 0;
+  transform-origin: center center;
+}
+
+/* Header (height: 120px) */
+.signage-header {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.back-icon {
+  width: 52px;
+  height: 52px;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon svg {
+  width: 52px;
+  height: 52px;
+}
+
+.header-title {
+  font-size: 52px;
+  font-weight: 600;
+  color: #101828;
+  margin-left: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-close-btn {
+  font-size: 36px;
+  font-weight: 600;
+  color: #344054;
+  background-color: #FFFFFF;
+  border: 2px solid #E4E7EC;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.header-close-btn:hover {
+  background-color: #F9FAFB;
+  border-color: #98A2B3;
+  color: #344054;
+}
+
+.header-close-btn:active {
+  transform: scale(0.95);
+}
+
+.participant-manage-btn {
+  height: 80px;
+  padding: 0 32px;
+  background-color: #FFFFFF;
+  border: 2.5px solid #EAECF0;
+  border-radius: 40px;
+  font-size: 36px;
+  font-weight: 600;
+  color: #344054;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.participant-manage-btn:active {
+  transform: scale(0.96);
+  background-color: #f9fafb;
+  border-color: #d0d5dd;
+}
+
+.participant-manage-btn svg {
+  width: 32px;
+  height: 32px;
+  stroke: #475467;
+}
+
+/* Cards (Gap: 24px) */
+.card-gap-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.signage-card {
+  background-color: #FFFFFF;
+  border-radius: 32px; /* Radius: 32px */
+  padding: 32px; /* Inner padding: 32px */
+  box-shadow: 0 16px 48px rgba(0, 108, 255, 0.04), 0 4px 12px rgba(0, 108, 255, 0.02);
+  border: 1px solid rgba(0, 108, 255, 0.05);
+  position: relative;
+}
+
+/* Main Wheel Card details */
+.wheel-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.badge-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.presenter-badge {
+  background-color: #006CFF; /* Primary color */
+  color: #FFFFFF;
+  font-size: 28px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(0, 108, 255, 0.25);
+}
+
+.presenter-badge svg {
+  width: 28px;
+  height: 28px;
+}
+
+.wheel-title-section {
+  text-align: center;
+  margin-bottom: 0px;
+  position: relative;
+}
+
+.wheel-main-title {
+  font-size: 68px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 12px;
+  letter-spacing: -1.5px;
+}
+
+.wheel-sub-title {
+  font-size: 32px;
+  color: #667085;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* Roulette Wheel Box */
+.roulette-viewport {
+  position: relative;
+  width: 852px;
+  height: 852px;
+  margin: 260px auto 10px auto; /* Exactly 60px gap below the title/subtitle section */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Needle Pin pointing down at the top center of roulette wheel */
+.roulette-pin {
+  position: absolute;
+  top: -31px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 83px;
+  height: 109px;
+  z-index: 10;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+}
+
+.roulette-pin svg {
+  width: 100%;
+  height: 100%;
+}
+
+.wheel-outer-ring {
+  width: 852px;
+  height: 852px;
+  border-radius: 50%;
+  background-color: transparent;
+  box-shadow: 0 16px 48px rgba(0, 50, 150, 0.12);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 2; /* Put wheel on top of fireworks-canvas */
+  transition: transform 5s cubic-bezier(0.1, 0.8, 0.1, 1); /* deceleration easing out smoothly */
+}
+
+/* 3D dimension and gorgeous inner shadow layering */
+.wheel-outer-ring::after {
+  content: "";
+  position: absolute;
+  top: 52px;
+  left: 52px;
+  right: 52px;
+  bottom: 52px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 24px rgba(0, 50, 150, 0.22), inset 0 0 10px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Beautiful Polar Bear Character placed in the bottom left corner overlapping the wheel (as in the template design) */
+.wheel-character-polar-bear {
+  position: absolute;
+  left: -13px;
+  bottom: -104px; /* Lowered and scaled per user request */
+  width: 312px;  /* Proportional size compared to the 852px wheel */
+  height: auto;
+  z-index: 15;   /* Must sit clearly in front of the wheel sectors and decorative studs */
+  pointer-events: none; /* Allows user to click behind/below the bear without blockages */
+  filter: drop-shadow(0 12px 28px rgba(0, 50, 150, 0.1));
+  display: flex;
+}
+
+.wheel-character-polar-bear img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Center "시작하기" Circle Spin Button (from design image) */
+.wheel-center-start-btn {
+  position: absolute;
+  width: 247px;
+  height: 247px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 25;
+  box-shadow: 0 12px 36px rgba(0, 108, 255, 0.22), 0 4px 12px rgba(0, 50, 150, 0.1);
+  border: 10.4px solid #EBF2FC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.wheel-center-start-btn:active {
+  transform: translate(-50%, -50%) scale(0.93);
+  border-color: #D3E4FF;
+  box-shadow: 0 6px 20px rgba(0, 108, 255, 0.15);
+}
+
+.start-btn-svg {
+  width: 107px;
+  height: 107px;
+  margin-top: 8px;
+  margin-bottom: 3px;
+  filter: drop-shadow(0 4px 8px rgba(0, 108, 255, 0.15));
+  animation: spinSlow 15s linear infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.start-btn-text {
+  font-size: 36px;
+  font-weight: 800;
+  color: #006CFF; /* Primary classic blue */
+  letter-spacing: -0.5px;
+}
+
+/* Beautiful 3D support stand container mimicking the design image */
+.wheel-stand-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 320px;
+  margin: -150px auto 10px auto; /* Tucks the stand directly under the wheel to eliminate any gap */
+  position: relative;
+  z-index: 1;
+}
+
+.wheel-stand-neck {
+  width: 80px;
+  height: 110px;
+  background: linear-gradient(180deg, #B2CEFF 0%, #8EAEFF 100%); /* Unified light blue gradient */
+  clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+  box-shadow: inset 1px 0px 4px rgba(255, 255, 255, 0.8);
+}
+
+.wheel-stand-foot {
+  width: 280px;
+  height: 34px;
+  background: linear-gradient(180deg, #B2CEFF 0%, #8EAEFF 100%); /* Unified matching light blue gradient */
+  border-radius: 17px;
+  box-shadow: 0 12px 28px rgba(0, 50, 150, 0.14), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.small-modal {
+  max-width: 640px !important;
+}
+
+/* Control Row Section */
+.control-row {
+  display: flex;
+  gap: 20px; /* Button gap: 20px */
+  height: 130px;
+}
+
+.control-btn {
+  border-radius: 32px; /* Radius: 32px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 30, 90, 0.04);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: none;
+}
+
+.control-btn:active {
+  transform: scale(0.96);
+}
+
+.option-btn, .reset-btn {
+  flex: 1;
+  background-color: #FFFFFF;
+  border: 2.5px solid #EAECF0;
+  color: #344054;
+  font-size: 34px;
+}
+
+.option-btn svg, .reset-btn svg {
+  width: 38px;
+  height: 38px;
+}
+
+.option-btn:active, .reset-btn:active {
+  background-color: #F9FAFB;
+  border-color: #D0D5DD;
+}
+
+/* Large Center Play / Start Button */
+.spin-start-btn {
+  flex: 2;
+  background: linear-gradient(135deg, #006CFF 0%, #0052C7 100%); /* Primary color gradient */
+  color: #FFFFFF;
+  font-size: 42px;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(0, 108, 255, 0.25);
+}
+
+.spin-start-btn svg {
+  width: 44px;
+  height: 44px;
+  fill: #FFFFFF;
+}
+
+.spin-start-btn:active {
+  background: linear-gradient(135deg, #0052C7 0%, #00419E 100%);
+  box-shadow: 0 8px 20px rgba(0, 108, 255, 0.15);
+}
+
+/* Bottom Card (Height: 240px, Radius: 32px) */
+.bottom-info-card {
+  height: 240px; /* Height: 240px */
+  background-color: #FFFFFF;
+  border-radius: 32px;
+  padding: 32px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 16px 48px rgba(0, 108, 255, 0.04);
+  overflow: hidden;
+}
+
+.instructions-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.instructions-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.instructions-title-row svg {
+  width: 32px;
+  height: 32px;
+  color: #006CFF;
+}
+
+.instructions-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.instructions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.instruction-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #E6F0FF;
+  color: #006CFF;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.instruction-text {
+  font-size: 24px;
+  color: #475467;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.instructions-right-mascot {
+  width: 220px;
+  height: 220px;
+  position: relative;
+  margin-right: -20px;
+  margin-bottom: -40px;
+  flex-shrink: 0;
+}
+
+/* Modals & Signage Overlay (Big touch elements) */
+.overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(16, 24, 40, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#fireworks-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 1000px;
+  pointer-events: none;
+  z-index: 1; /* Sits behind roulette wheel but over white card */
+}
+
+.overlay-backdrop.active {
+  display: flex;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.signage-modal {
+  width: 880px;
+  background-color: #FFFFFF;
+  border-radius: 48px;
+  padding: 48px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #F2F4F7;
+}
+
+.modal-title-text {
+  font-size: 48px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.modal-close-icon {
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #F8F9FC;
+  border: none;
+}
+
+.modal-close-icon svg {
+  width: 36px;
+  height: 36px;
+  stroke: #475467;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Winner View */
+.winner-alert-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.winner-trophy-crown {
+  margin-bottom: 8px;
+  animation: floatCrown 3s ease-in-out infinite;
+}
+
+@keyframes floatCrown {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.rotating-crown-aura {
+  transform-origin: 100px 100px;
+  animation: rotateAura 12s linear infinite;
+}
+
+@keyframes rotateAura {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.winner-subtitle {
+  font-size: 40px;
+  font-weight: 700;
+  color: #006CFF;
+  margin-bottom: 12px;
+  letter-spacing: 4px;
+  text-shadow: 0 4px 10px rgba(0, 108, 255, 0.15);
+}
+
+.winner-name-card-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin: 12px 0 24px 0;
+  width: 100%;
+}
+
+.confetti-side {
+  font-size: 72px;
+}
+
+.wave-anim {
+  animation: waveLeft 1.2s infinite ease-in-out;
+}
+
+.wave-anim-reverse {
+  animation: waveRight 1.2s infinite ease-in-out;
+}
+
+@keyframes waveLeft {
+  0%, 100% { transform: rotate(-5deg) scale(0.9); }
+  50% { transform: rotate(15deg) scale(1.1); }
+}
+
+@keyframes waveRight {
+  0%, 100% { transform: rotate(5deg) scale(0.9); }
+  50% { transform: rotate(-15deg) scale(1.1); }
+}
+
+.winner-name-card {
+  font-size: 110px; /* Highly magnified emphasized font size */
+  font-weight: 900;
+  color: #101828;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0F6FF 100%);
+  border: 5px solid #006CFF; /* Thick, high-visibility blue border */
+  border-radius: 40px;
+  padding: 32px 76px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 108, 255, 0.22), inset 0 2px 12px rgba(255, 255, 255, 0.9);
+  animation: bounceInflate 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, pulseRainbow 2s infinite ease-in-out 0.8s;
+  letter-spacing: -1px;
+}
+
+@keyframes bounceInflate {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulseRainbow {
+  0%, 100% { box-shadow: 0 24px 60px rgba(0, 108, 255, 0.22), 0 0 0 0px rgba(0, 108, 255, 0.2); }
+  50% { box-shadow: 0 24px 70px rgba(0, 108, 255, 0.35), 0 0 0 20px rgba(0, 108, 255, 0); }
+}
+
+/* Modal Bottom Button (Height 160px for modal buttons, touchable) */
+.modal-bottom-cta {
+  height: 160px;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+}
+
+.modal-cta-btn {
+  height: 100%;
+  flex: 1;
+  border-radius: 32px;
+  font-size: 38px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+}
+
+.modal-cta-btn:active {
+  transform: scale(0.96);
+}
+
+.modal-cta-primary {
+  background: linear-gradient(135deg, #006CFF 0%, #0051C4 100%);
+  color: #FFFFFF;
+}
+
+.modal-cta-secondary {
+  background-color: #E6F0FF;
+  color: #006CFF;
+  border: 2px solid #B3D1FF;
+}
+
+/* Participant List Editor */
+.participant-editor-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.editor-head-desc {
+  font-size: 26px;
+  color: #475467;
+  line-height: 1.5;
+}
+
+/* Touch Input Area */
+.touch-input-wrapper {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.large-signage-input {
+  flex: 1;
+  height: 96px;
+  border-radius: 24px;
+  border: 3px solid #D0D5DD;
+  font-size: 32px;
+  font-weight: 600;
+  padding: 0 32px;
+  color: #101828;
+  outline: none;
+  background-color: #F8F9FC;
+  transition: all 0.2s ease;
+}
+
+.large-signage-input:focus {
+  border-color: #006CFF;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 8px rgba(0, 108, 255, 0.1);
+}
+
+.add-name-btn {
+  width: 180px;
+  height: 96px;
+  background-color: #006CFF;
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 600;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 108, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.add-name-btn:active {
+  transform: scale(0.96);
+  background-color: #0052C7;
+}
+
+/* Chip/Badge Area for current names */
+.current-names-flow {
+  max-height: 440px;
+  overflow-y: auto;
+  border: 2px solid #EAECF0;
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  background-color: #F8F9FC;
+}
+
+.name-chip {
+  background-color: #FFFFFF;
+  border: 2px solid #E4E7EC;
+  border-radius: 20px;
+  padding: 12px 24px 12px 28px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #344054;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+}
+
+.name-chip-remove {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #F2F4F7;
+  color: #475467;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  transition: all 0.2s ease;
+}
+
+.name-chip-remove:active {
+  background-color: #FEE4E2;
+  color: #D92D20;
+}
+
+.quick-helpers-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quick-helpers-label {
+  font-size: 24px;
+  font-weight: 700;
+  color: #475467;
+}
+
+.quick-presets-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.preset-pill {
+  background-color: #E6F0FF;
+  border: 1.5px solid #B3D1FF;
+  color: #006CFF;
+  border-radius: 16px;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-pill:active {
+  background-color: #006CFF;
+  color: #FFFFFF;
+  transform: scale(0.95);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulseHighlight {
+  0% { box-shadow: 0 0 0 0 rgba(0, 108, 255, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(0, 108, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 108, 255, 0); }
+}
+
+/* Responsive Scaling Viewport Wrapper inside body */
+#viewport-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #000000; /* Black background to make the outer area disappear */
+}
+
+/* Beautiful Elegant Inline Winner Celebration Banner styles */
+.winner-banner-container {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 200;
+}
+
+.winner-banner-container.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.7);
+}
+
+.winner-banner-bubble {
+  background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 50%, #7DD3FC 100%); /* Premium light-sky blue to warm sky-blue */
+  color: #0369A1; /* High-contrast professional slate sky blue */
+  font-size: 32px;
+  font-weight: 800;
+  padding: 24px 64px; /* Spacious horizontal padding for beautiful proportion */
+  border-radius: 36px; /* Smooth rounded card feel */
+  box-shadow: 0 16px 40px rgba(14, 165, 233, 0.15), 0 4px 12px rgba(3, 105, 161, 0.08);
+  border: 3px solid #E0F2FE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 101;
+  animation: floatBanner 2.8s ease-in-out infinite;
+  min-width: 520px;
+}
+
+@keyframes floatBanner {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.banner-row-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.banner-row-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.banner-title-text {
+  font-size: 32px;
+  font-weight: 850;
+  color: #0369A1;
+  letter-spacing: -0.5px;
+}
+
+.banner-winner-text {
+  font-size: 26px;
+  font-weight: 600;
+  color: #075985;
+}
+
+.banner-winner-name {
+  background-color: #1D75FF; /* High contrast active classic blue brand */
+  color: #FFFFFF;
+  padding: 4px 24px;
+  border-radius: 9999px;
+  font-size: 38px;
+  font-weight: 850;
+  box-shadow: 0 8px 20px rgba(29, 117, 255, 0.22);
+}
+
+.banner-winner-suffix {
+  font-size: 26px;
+  font-weight: 600;
+  color: #075985;
+}
+
+.banner-sparkle {
+  font-size: 34px;
+}
+
+.banner-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(3, 105, 161, 0.08);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0369A1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.banner-close-btn:hover {
+  background: rgba(3, 105, 161, 0.16);
+  transform: scale(1.08);
+}
+
+.banner-close-btn:active {
+  transform: scale(0.92);
+}
+
+.banner-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Beautiful Interactive Participant Count Control Card Modal */
+.wheel-header-block {
+  width: 100%;
+}
+
+.participant-count-modal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  border-radius: 36px;
+  padding: 24px 48px;
+  width: 100%;
+  margin: 0 0 36px 0; /* Align with exactly 48px horizontal padding of the main container */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  border: 2px solid #EEF2F6;
+  box-sizing: border-box;
+}
+
+.count-modal-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.count-modal-left .user-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.count-modal-label {
+  font-size: 40px;
+  font-weight: 700;
+  color: #344054;
+  letter-spacing: -1px;
+}
+
+.count-modal-center {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 2.5px solid #EAECF0;
+  border-radius: 9999px;
+  padding: 8px 32px;
+  gap: 40px;
+  height: 96px;
+  box-sizing: border-box;
+}
+
+.count-btn {
+  background: none;
+  border: none;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #006CFF;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.count-btn:hover {
+  background-color: #F8FAFC;
+}
+
+.count-btn:active {
+  transform: scale(0.9);
+}
+
+.count-btn svg {
+  width: 36px;
+  height: 36px;
+}
+
+.count-value-display {
+  font-size: 52px;
+  font-weight: 700;
+  color: #101828;
+  min-width: 60px;
+  text-align: center;
+  user-select: none;
+}
+
+.count-modal-right {
+  display: flex;
+  align-items: center;
+}
+
+.count-modal-max-label {
+  font-size: 32px;
+  font-weight: 600;
+  color: #667085;
+}
+
