@@ -29,7 +29,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 24px 48px 48px 48px; /* Horizontal 48px, bottom 48px */
+  padding: 12px 24px 24px 24px; /* Horizontal 24px, bottom 24px (Reduced by 2x) */
   box-shadow: none;
   flex-shrink: 0;
   transform-origin: center center;
@@ -140,7 +140,7 @@ body {
 .card-gap-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 12px;
   flex: 1;
 }
 
@@ -220,9 +220,9 @@ body {
 /* Roulette Wheel Box */
 .roulette-viewport {
   position: relative;
-  width: 852px;
-  height: 852px;
-  margin: 260px auto 10px auto; /* Exactly 60px gap below the title/subtitle section */
+  width: 920px;
+  height: 920px;
+  margin: 240px auto 10px auto; /* Lowered significantly to prevent congratulations banner overlap */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -246,8 +246,8 @@ body {
 }
 
 .wheel-outer-ring {
-  width: 852px;
-  height: 852px;
+  width: 920px;
+  height: 920px;
   border-radius: 50%;
   background-color: transparent;
   box-shadow: 0 16px 48px rgba(0, 50, 150, 0.12);
@@ -262,10 +262,10 @@ body {
 .wheel-outer-ring::after {
   content: "";
   position: absolute;
-  top: 52px;
-  left: 52px;
-  right: 52px;
-  bottom: 52px;
+  top: 56px;
+  left: 56px;
+  right: 56px;
+  bottom: 56px;
   border-radius: 50%;
   box-shadow: inset 0 0 24px rgba(0, 50, 150, 0.22), inset 0 0 10px rgba(0, 0, 0, 0.12);
   pointer-events: none;
@@ -277,7 +277,7 @@ body {
   position: absolute;
   left: -13px;
   bottom: -104px; /* Lowered and scaled per user request */
-  width: 312px;  /* Proportional size compared to the 852px wheel */
+  width: 330px;  /* Proportional size compared to the 920px wheel */
   height: auto;
   z-index: 15;   /* Must sit clearly in front of the wheel sectors and decorative studs */
   pointer-events: none; /* Allows user to click behind/below the bear without blockages */
@@ -322,7 +322,7 @@ body {
   width: 107px;
   height: 107px;
   margin-top: 8px;
-  margin-bottom: 3px;
+  margin-bottom: -10px; /* Shift text position up */
   filter: drop-shadow(0 4px 8px rgba(0, 108, 255, 0.15));
   animation: spinSlow 15s linear infinite;
 }
@@ -337,6 +337,7 @@ body {
   font-weight: 800;
   color: #006CFF; /* Primary classic blue */
   letter-spacing: -0.5px;
+  margin-top: -6px; /* Shift text position up */
 }
 
 /* Beautiful 3D support stand container mimicking the design image */
@@ -920,14 +921,14 @@ body {
 }
 
 .winner-banner-bubble {
-  background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 50%, #7DD3FC 100%); /* Premium light-sky blue to warm sky-blue */
-  color: #0369A1; /* High-contrast professional slate sky blue */
+  background: #FFFFFF; /* Elegant pure white card card background */
+  color: #101828; /* High-contrast deep charcoal text */
   font-size: 32px;
   font-weight: 800;
   padding: 24px 64px; /* Spacious horizontal padding for beautiful proportion */
   border-radius: 36px; /* Smooth rounded card feel */
-  box-shadow: 0 16px 40px rgba(14, 165, 233, 0.15), 0 4px 12px rgba(3, 105, 161, 0.08);
-  border: 3px solid #E0F2FE;
+  box-shadow: 0 20px 50px rgba(0, 50, 150, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 4px solid #DFEBFC; /* Premium light blue-gray border */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -960,14 +961,14 @@ body {
 .banner-title-text {
   font-size: 32px;
   font-weight: 850;
-  color: #0369A1;
+  color: #006CFF; /* Highlighted in elegant primary blue */
   letter-spacing: -0.5px;
 }
 
 .banner-winner-text {
   font-size: 26px;
   font-weight: 600;
-  color: #075985;
+  color: #344054; /* Slate dark gray */
 }
 
 .banner-winner-name {
@@ -983,7 +984,7 @@ body {
 .banner-winner-suffix {
   font-size: 26px;
   font-weight: 600;
-  color: #075985;
+  color: #344054; /* Slate dark gray */
 }
 
 .banner-sparkle {
@@ -994,7 +995,7 @@ body {
   position: absolute;
   top: 14px;
   right: 14px;
-  background: rgba(3, 105, 161, 0.08);
+  background: rgba(16, 24, 40, 0.05);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -1002,7 +1003,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0369A1;
+  color: #667085; /* Slate gray close icon style */
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1033,8 +1034,8 @@ body {
   background-color: #FFFFFF;
   border-radius: 36px;
   padding: 24px 48px;
-  width: 100%;
-  margin: 0 0 36px 0; /* Align with exactly 48px horizontal padding of the main container */
+  width: 104%; /* Expanded 5% more for wider balanced modern signage style */
+  margin: 0 0 24px -2%; /* Aligned beautifully with slight left pull for centering */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
   border: 2px solid #EEF2F6;
   box-sizing: border-box;
@@ -1161,6 +1162,24 @@ body {
 .inline-edit-input-error {
   animation: pulseGlow 1.5s infinite;
   border-color: #EF4444 !important;
+}
+
+@keyframes winnerPulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 108, 255, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 108, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 108, 255, 0);
+  }
+}
+
+.winner-input-interaction {
+  animation: winnerPulseGlow 1.5s infinite;
+  border-color: #006CFF !important;
+  outline: none;
 }
 
 

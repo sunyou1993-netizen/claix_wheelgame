@@ -2,6 +2,8 @@
 class SignageAudioEngine {
   constructor() {
     this.ctx = null;
+    this.whirOsc = null;
+    this.whirGain = null;
   }
 
   init() {
@@ -22,9 +24,9 @@ class SignageAudioEngine {
 
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(800, this.ctx.currentTime); // Crisp click pitch
-    osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.05);
+    osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.05);
 
-    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.16, this.ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
 
     osc.connect(gain);
@@ -32,6 +34,49 @@ class SignageAudioEngine {
 
     osc.start();
     osc.stop(this.ctx.currentTime + 0.05);
+  }
+
+  startWhir() {
+    this.init();
+    if (!this.ctx) return;
+    this.stopWhir(); // safeguard reset
+
+    this.whirOsc = this.ctx.createOscillator();
+    this.whirGain = this.ctx.createGain();
+
+    this.whirOsc.type = 'sine';
+    this.whirOsc.frequency.setValueAtTime(140, this.ctx.currentTime); // dynamic low whir frequency
+
+    this.whirGain.gain.setValueAtTime(0.0, this.ctx.currentTime);
+    this.whirGain.gain.linearRampToValueAtTime(0.38, this.ctx.currentTime + 0.1); // significantly louder clean entry fade
+
+    this.whirOsc.connect(this.whirGain);
+    this.whirGain.connect(this.ctx.destination);
+
+    this.whirOsc.start();
+  }
+
+  updateWhir(progress) {
+    if (!this.whirOsc || !this.ctx) return;
+    // Lower the pitch from 140Hz down to 50Hz as the wheel slows down
+    const p = 140 - (progress * 90);
+    this.whirOsc.frequency.setValueAtTime(p, this.ctx.currentTime);
+
+    // Fade out volume slightly towards the end of the rotation
+    const currentGain = 0.38 * Math.cos(progress * Math.PI / 2);
+    if (this.whirGain) {
+      this.whirGain.gain.setValueAtTime(currentGain, this.ctx.currentTime);
+    }
+  }
+
+  stopWhir() {
+    if (this.whirOsc) {
+      try {
+        this.whirOsc.stop();
+      } catch (e) {}
+      this.whirOsc = null;
+    }
+    this.whirGain = null;
   }
 
   playSuccess() {
@@ -93,13 +138,13 @@ class FireworksCelebration {
     this.active = false;
     this.animationId = null;
     this.colors = [
-      '#FFB7CA', // Soft Pastel Pink
-      '#BCE3FF', // Airy Pastel Blue
-      '#B3F2CA', // Minty Pastel Green
-      '#FFF0A5', // Soft Butter Yellow
-      '#E2B3FF', // Sweet Lavender
-      '#FFD1B3', // Pastel Creamy Peach
-      '#99EAE5'  // Soft Pastel Teal
+      '#FF1F65', // Vivid Energetic Pink
+      '#006CFF', // Bold Royal Blue
+      '#13D475', // Vibrant Minty Green
+      '#FFC107', // Luminous Gold Yellow
+      '#A855F7', // Imperial Deep Purple
+      '#FF5722', // High-Contrast Electric Orange
+      '#00E5FF'  // Glowing Intense Cyan
     ];
   }
 
@@ -390,24 +435,16 @@ function drawRoulette() {
       // Draw rounded rectangle container
       ctx.beginPath();
       ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, cardR);
-      if (isWinner) {
-        // Premium gradient from sky blue to classic blue
-        const gradient = ctx.createLinearGradient(-cardW / 2, -cardH / 2, cardW / 2, cardH / 2);
-        gradient.addColorStop(0, '#3B82F6');
-        gradient.addColorStop(1, '#1D75FF');
-        ctx.fillStyle = gradient;
-      } else {
-        ctx.fillStyle = '#FFFFFF';
-      }
+      ctx.fillStyle = '#FFFFFF'; // Clean white background for both winner and normal to highlight the gorgeous blue border
       ctx.fill();
 
       // Disable shadow for text/borders next
       ctx.shadowBlur = 0;
       ctx.shadowOffsetY = 0;
 
-      // Clean border trim in brand light blue or gold-white
-      ctx.lineWidth = isWinner ? (3.5 * scaleFactor) : (2 * scaleFactor);
-      ctx.strokeStyle = isWinner ? '#FFFFFF' : '#D9E6FF';
+      // Clean border trim inside or around the card
+      ctx.lineWidth = isWinner ? (5.5 * scaleFactor) : (2 * scaleFactor);
+      ctx.strokeStyle = isWinner ? '#006CFF' : '#D9E6FF'; // Standout royal blue border for winner!
       ctx.stroke();
 
       // Draw participant text
@@ -421,7 +458,7 @@ function drawRoulette() {
       const winFontSize = Math.round(24 * scaleFactor);
       const normFontSize = Math.round(20 * scaleFactor);
       ctx.font = isWinner ? `bold ${winFontSize}px Pretendard` : `700 ${normFontSize}px Pretendard`;
-      ctx.fillStyle = isWinner ? '#FFFFFF' : (displayName === '입력' ? '#98A2B3' : '#344054');
+      ctx.fillStyle = isWinner ? '#006CFF' : (displayName === '입력' ? '#98A2B3' : '#344054'); // Standout blue font for winner!
 
       // Draw name centered inside card-pill
       ctx.fillText(displayName, 0, 0);
@@ -623,6 +660,9 @@ function openNameEditModal(idx, isError = false) {
   if (isError) {
     inputEl.className = 'inline-edit-input-error';
     inputEl.style.border = `${Math.round(3 * scaleFactor)}px solid #EF4444`;
+  } else if (isWinner) {
+    inputEl.className = 'winner-input-interaction';
+    inputEl.style.border = `${Math.round(3 * scaleFactor)}px solid #006CFF`;
   } else {
     inputEl.style.border = `${Math.round(3 * scaleFactor)}px solid #006CFF`;
   }
@@ -713,8 +753,14 @@ function spinWheel() {
   fireworks.stop();
 
   audio.init();
+  audio.startWhir(); // Start the elegant rotation sound whirr
   state.isSpinning = true;
   document.getElementById('spin-button').disabled = true;
+
+  const spinBtnText = document.querySelector('#spin-button .start-btn-text');
+  if (spinBtnText) {
+    spinBtnText.textContent = "진행중";
+  }
 
   const duration = 5000; // 5 seconds spin
   const startTime = performance.now();
@@ -762,6 +808,9 @@ function spinWheel() {
       lastTickIndex = currentTickSection;
     }
 
+    // Dynamic rotation sound frequency update
+    audio.updateWhir(progress);
+
     drawRoulette();
 
     if (progress < 1) {
@@ -776,6 +825,7 @@ function spinWheel() {
         spinBtnText.textContent = "다시하기";
       }
 
+      audio.stopWhir(); // Terminate the rotating sound cleanly
       audio.playSuccess();
       showWinnerModal();
     }
@@ -803,7 +853,7 @@ function showWinnerModal() {
   // Set friendly signage hint description
   const statusSubtitle = document.getElementById('wheel-status-subtitle');
   if (statusSubtitle) {
-    statusSubtitle.innerHTML = "시작하기 버튼이나 이름표를 다시 누르면<br />새 게임이 시작됩니다.";
+    statusSubtitle.innerHTML = "다시하기 버튼을 누르면 또 한번의 기회가!";
   }
 
   // Launch celebratory background fireworks
@@ -829,6 +879,11 @@ function syncParticipantsHTML() {
 
   // Clear winning index since participants updated
   state.winningIndex = null;
+
+  const statusSubtitle = document.getElementById('wheel-status-subtitle');
+  if (statusSubtitle) {
+    statusSubtitle.innerHTML = "이름표를 눌러 입력한 후<br />시작하기 버튼을 누르세요!";
+  }
 
   const spinBtnText = document.querySelector('#spin-button .start-btn-text');
   if (spinBtnText) {
