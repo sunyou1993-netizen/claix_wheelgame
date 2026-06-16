@@ -1094,8 +1094,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (backHomeTrigger) {
     backHomeTrigger.onclick = () => {
       audio.playClick();
-      // Go home or soft toast message
-      alert("시작 화면 또는 메인 단말로 돌아갑니다.");
+      window.location.href = 'https://claix-toolkit-xzrp.vercel.app/';
     };
   }
 
@@ -1103,7 +1102,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (closeAppTrigger) {
     closeAppTrigger.onclick = () => {
       audio.playClick();
-      alert("애플리케이션을 종료하고 메인 화면으로 이동합니다.");
+      window.location.href = 'https://claix-toolkit-xzrp.vercel.app/';
     };
   }
 });
