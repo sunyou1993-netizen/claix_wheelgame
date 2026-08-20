@@ -318,11 +318,11 @@ const fireworks = new FireworksCelebration('fireworks-canvas');
 // Primary application state
 const state = {
   participants: [
-    "입력",
-    "입력",
-    "입력",
-    "입력",
-    "입력"
+    "참가자 1",
+    "참가자 2",
+    "참가자 3",
+    "참가자 4",
+    "참가자 5"
   ],
   isSpinning: false,
   currentRotationAngle: 0, // In radians
@@ -448,9 +448,9 @@ function drawRoulette() {
       ctx.stroke();
 
       // Draw participant text
-      let displayName = state.participants[i] || '입력';
-      if (displayName.length > 4 && displayName !== '입력') {
-        displayName = displayName.substring(0, 3) + '..';
+      let displayName = state.participants[i] || `참가자 ${i + 1}`;
+      if (displayName.length > 6) {
+        displayName = displayName.substring(0, 5) + '..';
       }
 
       ctx.textAlign = 'center';
@@ -458,7 +458,7 @@ function drawRoulette() {
       const winFontSize = Math.round(24 * scaleFactor);
       const normFontSize = Math.round(20 * scaleFactor);
       ctx.font = isWinner ? `bold ${winFontSize}px Pretendard` : `700 ${normFontSize}px Pretendard`;
-      ctx.fillStyle = isWinner ? '#006CFF' : (displayName === '입력' ? '#98A2B3' : '#344054'); // Standout blue font for winner!
+      ctx.fillStyle = isWinner ? '#006CFF' : '#344054'; // Standout blue font for winner!
 
       // Draw name centered inside card-pill
       ctx.fillText(displayName, 0, 0);
@@ -608,8 +608,8 @@ function openNameEditModal(idx, isError = false) {
   }
 
   editingParticipantIndex = idx;
-  const currentName = state.participants[idx];
-  const displayName = (currentName === '입력') ? '' : currentName;
+  const currentName = state.participants[idx] || `참가자 ${idx + 1}`;
+  const displayName = currentName;
 
   // Get canvas context to calculate layout translation math
   const canvas = document.getElementById('roulette-canvas');
@@ -642,7 +642,7 @@ function openNameEditModal(idx, isError = false) {
   inputEl.type = 'text';
   inputEl.value = displayName;
   inputEl.maxLength = 10;
-  inputEl.placeholder = '입력';
+  inputEl.placeholder = `참가자 ${idx + 1}`;
 
   const isWinner = (!state.isSpinning && state.winningIndex !== null && idx === state.winningIndex);
   const cardW = (isWinner ? 122 : 100) * scaleFactor;
@@ -692,7 +692,7 @@ function openNameEditModal(idx, isError = false) {
   const saveChanges = () => {
     if (isSaved) return;
     isSaved = true;
-    const finalVal = inputEl.value.trim() || '입력';
+    const finalVal = inputEl.value.trim() || `참가자 ${idx + 1}`;
     state.participants[idx] = finalVal;
     editingParticipantIndex = null;
     audio.playClick();
@@ -733,12 +733,11 @@ function spinWheel() {
     activeInput.remove();
   }
 
-  // Check if there is any participant whose name is empty or literally '입력'
-  const firstEmptyIdx = state.participants.findIndex(name => !name || name.trim() === '' || name.trim() === '입력');
-  if (firstEmptyIdx !== -1) {
-    showToast("참여자 이름을 모두 입력해 주세요!");
-    openNameEditModal(firstEmptyIdx, true); // Open in error mode!
-    return;
+  // Ensure all participants have valid non-empty names (fallback to default '참가자 N' if empty)
+  for (let i = 0; i < state.participants.length; i++) {
+    if (!state.participants[i] || state.participants[i].trim() === '') {
+      state.participants[i] = `참가자 ${i + 1}`;
+    }
   }
 
   // Dismiss inline banner and stop old fireworks
@@ -1021,7 +1020,8 @@ window.addEventListener('DOMContentLoaded', () => {
       if (state.isSpinning) return;
       if (state.participants.length < 20) {
         audio.playClick();
-        state.participants.push("입력");
+        const nextNum = state.participants.length + 1;
+        state.participants.push(`참가자 ${nextNum}`);
         syncParticipantsHTML();
       } else {
         alert("최대 20명까지만 설정할 수 있습니다.");
@@ -1040,7 +1040,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       const statusSubtitle = document.getElementById('wheel-status-subtitle');
       if (statusSubtitle) {
-        statusSubtitle.innerHTML = "시작하기 버튼이나 이름표를 눌러<br />변경하고 돌려보세요!";
+        statusSubtitle.innerHTML = "이름표를 눌러 입력한 후<br />시작하기 버튼을 누르세요!";
       }
       fireworks.stop();
     };
