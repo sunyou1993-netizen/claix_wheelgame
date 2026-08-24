@@ -394,15 +394,22 @@ function drawRoulette() {
       // Sleek luminous light sky blue segment highlight for the winning section
       ctx.fillStyle = '#E0F2FE';
     } else {
-      // Soft alternate elegant colors: soft lavender/white to pastel blue
-      ctx.fillStyle = (i % 2 === 0) ? '#FFFFFF' : '#E3ECFC';
+      // Soft alternate elegant colors: white (#FFFFFF) and pastel blue (#E3ECFC)
+      // When odd number of sectors, the last sector sits between pastel blue and white, so give it an intermediate tint (#F1F6FE)
+      if (numSectors % 2 !== 0 && numSectors > 1 && i === numSectors - 1) {
+        ctx.fillStyle = '#F1F6FE'; // Midpoint tone between pure white and pastel sky blue
+      } else {
+        ctx.fillStyle = (i % 2 === 0) ? '#FFFFFF' : '#E3ECFC';
+      }
     }
     ctx.fill();
 
-    // Clean segment divide border strokes
-    ctx.lineWidth = isWinner ? (6 * scaleFactor) : (4 * scaleFactor);
-    ctx.strokeStyle = isWinner ? '#006CFF' : '#FFFFFF';
-    ctx.stroke();
+    // Segment divide border stroke (only highlight winning segment)
+    if (isWinner) {
+      ctx.lineWidth = 6 * scaleFactor;
+      ctx.strokeStyle = '#006CFF';
+      ctx.stroke();
+    }
 
     // Draw card-pill with name inside each sector
     ctx.save();
