@@ -250,9 +250,11 @@ class FireworksCelebration {
 
     this.animationId = requestAnimationFrame(() => this.loop());
 
-    // Semi-transparent clears to create gorgeous trailing light effect fading to flat pastel blue background (#F4F8FF)
-    this.ctx.fillStyle = 'rgba(244, 248, 255, 0.22)';
+    // Fully transparent clear with destination-out for smooth fading particle trails on any custom background
+    this.ctx.globalCompositeOperation = 'destination-out';
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.globalCompositeOperation = 'source-over';
 
     // Update & draw launching rockets
     for (let i = this.fireworks.length - 1; i >= 0; i--) {
@@ -754,7 +756,11 @@ function spinWheel() {
   audio.init();
   audio.startWhir(); // Start the elegant rotation sound whirr
   state.isSpinning = true;
-  document.getElementById('spin-button').disabled = true;
+  const spinBtnEl = document.getElementById('spin-button');
+  if (spinBtnEl) {
+    spinBtnEl.disabled = true;
+    spinBtnEl.classList.add('spinning');
+  }
 
   const spinBtnText = document.querySelector('#spin-button .start-btn-text');
   if (spinBtnText) {
@@ -817,7 +823,11 @@ function spinWheel() {
     } else {
       // Completed!
       state.isSpinning = false;
-      document.getElementById('spin-button').disabled = false;
+      const spinBtnEl = document.getElementById('spin-button');
+      if (spinBtnEl) {
+        spinBtnEl.disabled = false;
+        spinBtnEl.classList.remove('spinning');
+      }
       
       const spinBtnText = document.querySelector('#spin-button .start-btn-text');
       if (spinBtnText) {
@@ -881,7 +891,7 @@ function syncParticipantsHTML() {
 
   const statusSubtitle = document.getElementById('wheel-status-subtitle');
   if (statusSubtitle) {
-    statusSubtitle.innerHTML = "이름표를 눌러 입력한 후<br />시작하기 버튼을 누르세요!";
+    statusSubtitle.innerHTML = "이름표를 눌러 입력한 후 시작하기 버튼을 누르세요!";
   }
 
   const spinBtnText = document.querySelector('#spin-button .start-btn-text');

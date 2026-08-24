@@ -24,7 +24,11 @@ body {
 #app-container {
   width: 1080px;
   height: 1920px;
-  background-color: #F4F8FF; /* Flat pastel blue background */
+  background-color: #F4F8FF;
+  background-image: url('/image2342.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -193,28 +197,38 @@ body {
 
 .wheel-title-section {
   text-align: center;
-  margin-bottom: 0px;
+  margin: 80px auto 80px auto; /* Centered exactly in the middle between participant modal and roulette wheel */
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px; /* Gentle spacing between title and subtitle */
+  height: 140px; /* Locked height so that spinning or text updates never cause layout shift */
+  box-sizing: border-box;
 }
 
 .wheel-main-title {
-  font-size: 68px;
+  font-size: 64px;
   font-weight: 700;
   color: #101828;
-  margin-bottom: 12px;
+  margin-bottom: 0px;
   letter-spacing: -1.5px;
+  line-height: 1.2;
 }
 
 .wheel-sub-title {
-  font-size: 32px;
+  font-size: 30px;
   color: #667085;
   font-weight: 500;
-  line-height: 1.45;
-  min-height: 100px; /* Force minimum height of 2 lines to prevent layout shift */
+  line-height: 42px;
+  height: 42px;
+  margin-top: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  white-space: nowrap;
 }
 
 /* Roulette Wheel Box */
@@ -222,7 +236,7 @@ body {
   position: relative;
   width: 920px;
   height: 920px;
-  margin: 240px auto 10px auto; /* Lowered significantly to prevent congratulations banner overlap */
+  margin: 20px auto 10px auto; /* Sits naturally on the lower stage pedestal */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,14 +295,34 @@ body {
   height: auto;
   z-index: 15;   /* Must sit clearly in front of the wheel sectors and decorative studs */
   pointer-events: none; /* Allows user to click behind/below the bear without blockages */
-  filter: drop-shadow(0 12px 28px rgba(0, 50, 150, 0.1));
   display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .wheel-character-polar-bear img {
   width: 100%;
   height: auto;
   object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(10, 30, 80, 0.09));
+  position: relative;
+  z-index: 2;
+}
+
+/* Realistic soft ground shadow under the bear's paws */
+.wheel-character-polar-bear::after {
+  content: "";
+  position: absolute;
+  bottom: 12px;
+  left: 18%;
+  width: 64%;
+  height: 28px;
+  background: radial-gradient(ellipse at center, rgba(20, 50, 110, 0.22) 0%, rgba(20, 50, 110, 0.08) 50%, rgba(20, 50, 110, 0) 75%);
+  border-radius: 50%;
+  z-index: 1;
+  transform: rotate(-3deg);
+  filter: blur(6px);
+  opacity: 0.85;
 }
 
 /* Center "시작하기" Circle Spin Button (from design image) */
@@ -309,13 +343,34 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .wheel-center-start-btn:active {
   transform: translate(-50%, -50%) scale(0.93);
   border-color: #D3E4FF;
   box-shadow: 0 6px 20px rgba(0, 108, 255, 0.15);
+}
+
+/* Active Spinning State (User Request: Blue gradient background, white star & white text) */
+.wheel-center-start-btn.spinning,
+.wheel-center-start-btn:disabled {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  border-color: #93C5FD;
+  box-shadow: 0 14px 40px rgba(29, 78, 216, 0.4), 0 0 25px rgba(59, 130, 246, 0.35);
+  cursor: default;
+}
+
+.wheel-center-start-btn.spinning .start-btn-text,
+.wheel-center-start-btn:disabled .start-btn-text {
+  color: #FFFFFF;
+  text-shadow: 0 2px 8px rgba(0, 30, 100, 0.3);
+}
+
+.wheel-center-start-btn.spinning .start-btn-svg polygon,
+.wheel-center-start-btn:disabled .start-btn-svg polygon {
+  fill: #FFFFFF !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
 }
 
 .start-btn-svg {
@@ -338,6 +393,7 @@ body {
   color: #006CFF; /* Primary classic blue */
   letter-spacing: -0.5px;
   margin-top: -6px; /* Shift text position up */
+  transition: color 0.3s ease;
 }
 
 /* Beautiful 3D support stand container mimicking the design image */
@@ -538,7 +594,8 @@ body {
   width: 1000px;
   height: 1000px;
   pointer-events: none;
-  z-index: 1; /* Sits behind roulette wheel but over white card */
+  z-index: 1; /* Sits behind roulette wheel */
+  background: transparent !important;
 }
 
 .overlay-backdrop.active {
@@ -903,40 +960,45 @@ body {
 /* Beautiful Elegant Inline Winner Celebration Banner styles */
 .winner-banner-container {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 1;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 200;
+  width: max-content;
+  max-width: 1040px;
 }
 
 .winner-banner-container.hidden {
   display: none;
   opacity: 0;
-  transform: translateX(-50%) scale(0.7);
+  transform: translate(-50%, -50%) scale(0.7);
 }
 
 .winner-banner-bubble {
-  background: #FFFFFF; /* Elegant pure white card card background */
+  background: #FFFFFF; /* Elegant pure white card background */
   color: #101828; /* High-contrast deep charcoal text */
-  font-size: 32px;
-  font-weight: 800;
-  padding: 24px 64px; /* Spacious horizontal padding for beautiful proportion */
-  border-radius: 36px; /* Smooth rounded card feel */
+  padding: 24px 64px; /* Spacious padding */
+  border-radius: 40px; /* Smooth rounded card feel */
   box-shadow: 0 20px 50px rgba(0, 50, 150, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
   border: 4px solid #DFEBFC; /* Premium light blue-gray border */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   position: relative;
   z-index: 101;
   animation: floatBanner 2.8s ease-in-out infinite;
-  min-width: 520px;
+  min-width: 680px;
+  max-width: 960px;
+  width: max-content;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
 @keyframes floatBanner {
@@ -949,6 +1011,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  white-space: nowrap;
 }
 
 .banner-row-2 {
@@ -956,6 +1019,8 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 .banner-title-text {
@@ -963,12 +1028,17 @@ body {
   font-weight: 850;
   color: #006CFF; /* Highlighted in elegant primary blue */
   letter-spacing: -0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .banner-winner-text {
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
   color: #344054; /* Slate dark gray */
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
 }
 
 .banner-winner-name {
@@ -976,30 +1046,40 @@ body {
   color: #FFFFFF;
   padding: 4px 24px;
   border-radius: 9999px;
-  font-size: 38px;
+  font-size: 36px;
   font-weight: 850;
   box-shadow: 0 8px 20px rgba(29, 117, 255, 0.22);
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .banner-winner-suffix {
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
   color: #344054; /* Slate dark gray */
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
 }
 
 .banner-sparkle {
-  font-size: 34px;
+  font-size: 32px;
+  flex-shrink: 0;
 }
 
 .banner-close-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 16px;
+  right: 16px;
   background: rgba(16, 24, 40, 0.05);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1036,8 +1116,8 @@ body {
   padding: 24px 48px;
   width: 104%; /* Expanded 5% more for wider balanced modern signage style */
   margin: 0 0 24px -2%; /* Aligned beautifully with slight left pull for centering */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  border: 2px solid #EEF2F6;
+  box-shadow: 0 14px 40px rgba(16, 40, 90, 0.08), 0 4px 14px rgba(0, 0, 0, 0.02);
+  border: none; /* Removed gray border per user request */
   box-sizing: border-box;
 }
 
@@ -1062,8 +1142,8 @@ body {
 .count-modal-center {
   display: flex;
   align-items: center;
-  background-color: #FFFFFF;
-  border: 2.5px solid #EAECF0;
+  background-color: #F8FAFC;
+  border: none;
   border-radius: 9999px;
   padding: 8px 32px;
   gap: 40px;
@@ -1072,30 +1152,39 @@ body {
 }
 
 .count-btn {
-  background: none;
-  border: none;
+  background-color: #FFFFFF;
+  border: 1.5px solid #D0D5DD;
+  box-shadow: 0 3px 8px rgba(16, 24, 40, 0.08);
   width: 64px;
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #006CFF;
+  color: #344054; /* Dark Gray */
   cursor: pointer;
   border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .count-btn:hover {
   background-color: #F8FAFC;
+  border-color: #98A2B3;
+  color: #101828;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(16, 24, 40, 0.12);
 }
 
 .count-btn:active {
-  transform: scale(0.9);
+  transform: scale(0.92);
+  background-color: #EAECF0;
+  box-shadow: 0 1px 4px rgba(16, 24, 40, 0.08);
 }
 
 .count-btn svg {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
+  stroke: #344054; /* Dark Gray */
+  stroke-width: 3;
 }
 
 .count-value-display {
